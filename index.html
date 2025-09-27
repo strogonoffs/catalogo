@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo Teste Google Drive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #eae7d9;
+            margin: 0;
+            color: #515243;
+        }
+        .catalogo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            padding: 40px;
+        }
+        .produto {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(111,126,82,0.12);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+        .produto img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .produto-nome {
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 16px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 998;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(81, 82, 67, .25);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            min-width: 300px;
+            box-shadow: 0 4px 36px rgba(111,126,82,0.3);
+            position: relative;
+            text-align: center;
+        }
+        .close-btn {
+            position: absolute;
+            right: 16px; top: 16px;
+            background: #6f7e52;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            width: 32px; height: 32px;
+            cursor: pointer;
+        }
+        .produto-preco {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #ad9764;
+            margin-top: 20px;
+        }
+        .produto-medidas {
+            margin: 24px 0 12px 0;
+            font-size: 1.1rem;
+            color: #6f7e52;
+        }
+        .comprar-btn {
+            background: #ad9764;
+            color: #fff;
+            padding: 12px 32px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background .2s;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .comprar-btn:hover {
+            background: #6f7e52;
+        }
+        @media(max-width:600px){
+            .catalogo { padding: 16px; gap: 18px;}
+        }
+    </style>
+</head>
+<body>
+<div class="catalogo" id="produtosGrid"></div>
+
+<div id="modalProduto" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="fecharModal()">×</button>
+        <img id="modalImg" src="" alt="" style="max-width:280px; border-radius:12px; margin-bottom:12px;">
+        <div id="modalNome" class="produto-nome"></div>
+        <div class="produto-preco" id="modalPreco"></div>
+        <div class="produto-medidas" id="modalMedidas"></div>
+        <a id="modalLink" class="comprar-btn" target="_blank">Comprar</a>
+    </div>
+</div>
+
+<script>
+    // Produto de teste usando Google Drive
+    const produtos = [
+        {
+            nome: "Produto Teste Google Drive",
+            imagem: "https://drive.google.com/uc?export=view&id=1cFwO1hUoC4iud1ALzKakKBT1vDx4uGFY",
+            preco: "R$ 119,99",
+            medidas: "30x30cm",
+            link: "#"
+        }
+    ];
+    let grid = document.getElementById('produtosGrid');
+    produtos.forEach((p,i) => {
+        let card = `<div class="produto" onclick="abrirModal(${i})">
+            <img src="${p.imagem}" alt="${p.nome}">
+            <div class="produto-nome">${p.nome}</div>
+        </div>`;
+        grid.innerHTML += card;
+    });
+    function abrirModal(idx) {
+        const p = produtos[idx];
+        document.getElementById('modalImg').src = p.imagem;
+        document.getElementById('modalNome').innerText = p.nome;
+        document.getElementById('modalPreco').innerText = p.preco;
+        document.getElementById('modalMedidas').innerText = p.medidas;
+        document.getElementById('modalLink').href = p.link;
+        document.getElementById('modalLink').innerText = "Comprar";
+        document.getElementById('modalProduto').classList.add('active');
+    }
+    function fecharModal() {
+        document.getElementById('modalProduto').classList.remove('active');
+    }
+</script>
+</body>
+</html>
